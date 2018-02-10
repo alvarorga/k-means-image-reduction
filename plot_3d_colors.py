@@ -6,7 +6,7 @@ from mpl_toolkits.mplot3d import Axes3D
 def plot_3d_colors(im):
     # Select only a random subset of all pixels. All of them is very
     # computationally expensive.
-    num_pix = 5000
+    num_pix = 5000 if np.shape(im)[0] > 5000 else np.shape(im)[0]
     pix_mu = np.random.permutation(np.arange(np.shape(im)[0]))[:num_pix]
 
     fig = plt.figure()
