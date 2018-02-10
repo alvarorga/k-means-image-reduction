@@ -11,7 +11,7 @@ def plot_3d_colors(im):
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(im[pix_mu, 0], im[pix_mu, 1], im[pix_mu, 2], c=im[pix_mu]/256)
+    ax.scatter(im[pix_mu, 0], im[pix_mu, 1], im[pix_mu, 2], c=im[pix_mu])
     plt.show()
 
     return

@@ -15,6 +15,8 @@ if __name__ == '__main__':
     num_pixels = im_shape[0]*im_shape[1]
     # Flatten the pixel locations (but not the color dimensions).
     im = np.reshape(im, (num_pixels, im_shape[2]))
+    # Normalize the RGB colors from 0-255 to 0-1.
+    im = im/256
 
     # Number of clusters/colors.
     K = 8
