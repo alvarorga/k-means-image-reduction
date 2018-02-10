@@ -39,9 +39,12 @@ def do_k_means(K, im, pix_mu, tol=1e-3, max_iters=200):
 
         mu_colors = np.copy(new_mu_colors)
         if tol_reached:
+            dist_to_centroids = 0
             for k in range(K):
                 ix_k = np.nonzero(nearest_centroids == k)
                 new_im[ix_k] = new_mu_colors[k]
+                dist_to_centroids += np.linalg.norm(im[ix_k]
+                                                    - new_mu_colors[k])
             break
 
-    return new_im
+    return new_im, new_mu_colors, dist_to_centroids
