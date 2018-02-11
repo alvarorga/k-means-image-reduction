@@ -1,7 +1,8 @@
 import numpy as np
+from numba import njit, u2
 
 
-def do_k_means(K, im, pix_mu, tol=1e-3, max_iters=200):
+def do_k_means(K, im, pix_mu, tol=1e-2, max_iters=200):
     """Do the K-means algorithm to group the pixels of an image in K
     clusters.
 
@@ -34,7 +35,6 @@ def do_k_means(K, im, pix_mu, tol=1e-3, max_iters=200):
             new_mu_colors[k] = np.mean(im[ix_k], axis=0)
 
         distance_new_centroids = np.linalg.norm(new_mu_colors - mu_colors)
-        print(distance_new_centroids)
         tol_reached = True if distance_new_centroids < tol else False
 
         mu_colors = np.copy(new_mu_colors)
