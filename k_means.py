@@ -1,5 +1,5 @@
 import numpy as np
-from numba import njit, u2
+from sklearn.cluster import KMeans
 
 
 def do_k_means(K, im, pix_mu, tol=1e-2, max_iters=200):
@@ -48,3 +48,18 @@ def do_k_means(K, im, pix_mu, tol=1e-2, max_iters=200):
             break
 
     return new_im, new_mu_colors, dist_to_centroids
+
+
+def do_sklearn_kmeans(K, im, tol=1e-2, max_iters=200):
+    """Do the K-means algorithm to group the pixels of an image in K
+    clusters.
+    """
+    kmeans = KMeans(n_clusters=K, n_jobs=1,verbose=1).fit(im)
+    new_mu_colors = kmeans.cluster_centers_
+
+    new_im = np.copy(im)
+    for k in range(K):
+        ix_k = np.nonzero(kmeans.labels_ == k)
+        new_im[ix_k] = new_mu_colors[k]
+
+    return new_im

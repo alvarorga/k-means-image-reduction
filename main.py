@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from read_image import read_image
-from k_means import do_k_means
+from k_means import do_k_means, do_sklearn_kmeans
 from plot_3d_colors import plot_3d_colors
 
 if __name__ == '__main__':
@@ -23,21 +23,26 @@ if __name__ == '__main__':
 
     plot_3d_colors(im)
 
-    # We do the K-means several times with different inizialitaions
-    # and then we will choose the one with the lowest cost.
-    max_iter = 8
-    cost = 1e+28
-    print('Clustering image in {} colors'.format(K))
-    for i in range(max_iter):
-        # Initial centroids, in pixel coordinates.
-        pix_mu = np.random.permutation(np.arange(num_pixels))[:K]
-        t_new_im, t_new_mu_colors, t_cost = do_k_means(K, im, pix_mu)
-        print('Cost: {}'.format(t_cost))
+    do_with_scikit = True
 
-        if t_cost < cost:
-            new_im = t_new_im
-            new_mu_colors = t_new_mu_colors
-            cost = t_cost
+    if do_with_scikit:
+        new_im = do_sklearn_kmeans(K, im)
+    else:
+        # We do the K-means several times with different inizialitaions
+        # and then we will choose the one with the lowest cost.
+        max_iter = 8
+        cost = 1e+28
+        print('Clustering image in {} colors'.format(K))
+        for i in range(max_iter):
+            # Initial centroids, in pixel coordinates.
+            pix_mu = np.random.permutation(np.arange(num_pixels))[:K]
+            t_new_im, t_new_mu_colors, t_cost = do_k_means(K, im, pix_mu)
+            print('Cost: {}'.format(t_cost))
+
+            if t_cost < cost:
+                new_im = t_new_im
+                new_mu_colors = t_new_mu_colors
+                cost = t_cost
 
     # Reshape the image into its original form.
     im = np.reshape(im, im_shape)
